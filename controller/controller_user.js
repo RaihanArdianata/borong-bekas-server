@@ -36,7 +36,7 @@ class Controller {
     const user = {
       email: req.body.email,
       password: req.body.password,
-      role: 2,
+      role: req.body.role,
     };
     User.findOne({
       where: {
@@ -122,11 +122,12 @@ class Controller {
     const user = {
       email: req.body.email,
       password: req.body.password,
-      role: 1,
+      role: req.body.role,
     };
     User.findOne({
       where: {
         email: user.email,
+        role: user.role
       },
     })
       .then((result) => {
