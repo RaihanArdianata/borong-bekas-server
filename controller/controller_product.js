@@ -53,6 +53,28 @@ class Controller {
       });
   }
 
+  static get_product_by_id(req, res, next) {
+    Product.findOne(
+      {
+        where: {
+          id: req.params.id
+        },
+        include: [
+          {
+            model: User,
+            required : true,
+          }
+        ]
+      }
+    )
+      .then((result) => {
+        return res.status(200).json(result);
+      })
+      .catch((err) => {
+        return next(err);
+      });
+  }
+
   static create(req, res, next) {
     const product = {
       product_name: req.body.product_name,
