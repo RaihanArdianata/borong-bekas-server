@@ -1,0 +1,5 @@
+-install node js
+-buat folder exp "project-a"
+-cd project-a
+-npm init -y
+-npm install sharp express sql2 multer 
