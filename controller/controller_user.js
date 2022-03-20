@@ -36,32 +36,42 @@ class Controller {
     const user = {
       email: req.body.email,
       password: req.body.password,
-      role: req.body.role,
+      role: 2,
     };
     User.findOne({
       where: {
         email: user.email,
-        role: user.role
       },
     })
       .then((result) => {
         if (result) {
-          console.log(result.password);
           const compare = decodePassword(req.body.password, result.password);
           if (compare) {
             const payload = {
               id: result.id,
               password: result.password,
             };
-            const token = encodeToken(payload);
-            return res.status(200).json({
-              nama: result.nama,
-              email: result.email,
-              no_tel: result.no_tel,
-              alamat: result.alamat,
-              role: result.role,
-              access_token: token,
-            });
+            if(result.role == 2){
+              const token = encodeToken(payload);
+              return res.status(200).json({
+                nama: result.nama,
+                email: result.email,
+                no_tel: result.no_tel,
+                alamat: result.alamat,
+                role: result.role,
+                access_token: token,
+              });
+            }else{
+              return next({
+                name: "No Access",
+                errors: [
+                  {
+                    status: 400,
+                    message: "Bukan Seller",
+                  },
+                ],
+              });
+            }
           } else {
             return next({
               name: "NotFound",
@@ -122,32 +132,42 @@ class Controller {
     const user = {
       email: req.body.email,
       password: req.body.password,
-      role: req.body.role,
+      role: 1,
     };
     User.findOne({
       where: {
         email: user.email,
-        role: user.role
       },
     })
       .then((result) => {
         if (result) {
-          console.log(result.password);
           const compare = decodePassword(req.body.password, result.password);
           if (compare) {
-            const payload = {
-              id: result.id,
-              password: result.password,
-            };
-            const token = encodeToken(payload);
-            return res.status(200).json({
-              nama: result.nama,
-              email: result.email,
-              no_tel: result.no_tel,
-              alamat: result.alamat,
-              access_token: token,
-              role: result.role
-            });
+            if(result.role == 1){
+              const payload = {
+                id: result.id,
+                password: result.password,
+              };
+              const token = encodeToken(payload);
+              return res.status(200).json({
+                nama: result.nama,
+                email: result.email,
+                no_tel: result.no_tel,
+                alamat: result.alamat,
+                access_token: token,
+                role: result.role
+              });
+            }else{
+              return next({
+                name: "No Access", 
+                errors: [
+                  {
+                    status: 400,
+                    message: "Bukan User",
+                  },
+                ],
+              });
+            }
           } else {
             return next({
               name: "NotFound",
