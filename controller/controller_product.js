@@ -1,4 +1,4 @@
-const { Product, User } = require("../models");
+const { Product, User, Cart } = require("../models");
 const { encodeToken } = require("../helper/jwt.js");
 const del = require("del");
 
@@ -15,7 +15,11 @@ class Controller {
         include: [
           {
             model: User,
-            required : true,
+            required: true,
+          },
+          {
+            model: Cart,
+            required: true,
           }
         ]
       }
@@ -37,10 +41,17 @@ class Controller {
         order: [
           ['id', 'DESC'],
         ],
+        attributes: {
+          include: [[Product.sequelize.fn("COUNT", Product.sequelize.col("carts.id")), "cartCount"]]
+        },
         include: [
           {
             model: User,
-            required : true,
+            required: true,
+          },
+          {
+            model: Cart,
+            required: true,
           }
         ]
       }
@@ -62,7 +73,7 @@ class Controller {
         include: [
           {
             model: User,
-            required : true,
+            required: true,
           }
         ]
       }
@@ -96,7 +107,7 @@ class Controller {
 
   //put
   static update(req, res, next) {
-    
+
     const id = req.params.id;
     const product = {
       product_name: req.body.product_name,
