@@ -19,7 +19,7 @@ class Controller {
           },
           {
             model: Cart,
-            required: true,
+            required: false,
           }
         ]
       }

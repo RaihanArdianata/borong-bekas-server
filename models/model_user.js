@@ -53,10 +53,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    alamat: {
-      type: DataTypes.STRING,
-      allowNull: true
-    }
   }, {
     hooks: {
       beforeCreate: (user, options) => {
@@ -68,7 +64,8 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = function (models) {
     // associations can be defined here
     User.hasMany(models.Product, { foreignKey: "userID", onDelete: 'cascade' })
-    User.hasMany(models.Transaction, { foreignKey: "userID", onDelete: 'cascade' })
+    User.hasMany(models.Address, { foreignKey: "userID", onDelete: 'cascade' })
+    // User.hasMany(models.Transaction, { foreignKey: "userID", onDelete: 'cascade' })
   };
   return User;
 };

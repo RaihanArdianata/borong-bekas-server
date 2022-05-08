@@ -4,7 +4,11 @@ module.exports = (sequelize, DataTypes) => {
   const { Model } = sequelize.Sequelize
 
   class Cart extends Model {}
-
+  // 1 in cart
+  // 2 waiting payment
+  // 3 payment success waiting seller send product
+  // 4 on going
+  // 5 done
   Cart.init({
     qty: {
       type: DataTypes.INTEGER

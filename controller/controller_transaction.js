@@ -4,6 +4,7 @@ const {
   DeliveryService,
   PaymentMethod,
   User,
+  sequelize
 } = require("../models");
 const { encodeToken } = require("../helper/jwt.js");
 
@@ -12,10 +13,6 @@ class Controller {
     Transaction.findAll({
       order: [["id", "DESC"]],
       include: [
-        {
-          model: Product,
-          // required: true,
-        },
         {
           model: DeliveryService,
           // required: true,
@@ -46,10 +43,6 @@ class Controller {
       order: [["id", "DESC"]],
       include: [
         {
-          model: Product,
-          required: true,
-        },
-        {
           model: DeliveryService,
           required: true,
         },
@@ -71,50 +64,20 @@ class Controller {
       });
   }
 
-  static createTransaction(req, res, next) {
-    const transaction = {
+  static async createTransaction(req, res, next) {
+    const transactionData = {
       total_price: 0,
       userID: req.CurrentUserId,
-      productID: +req.body.productId,
       paymentMethodID: +req.body.paymentMethodId,
       deliveryServiceID: +req.body.deliveryServiceId,
     };
+    const transaction = await sequelize.transaction()
 
-    console.log(transaction);
-
-    Product.findOne({
-      where: {
-        id: transaction.productID,
-      },
-    })
-      .then((product_result) => {
-        DeliveryService.findOne({
-          where: {
-            id: transaction.deliveryServiceID,
-          },
-        })
-          .then((delivery_result) => {
-            Transaction.create({...transaction, total_price: delivery_result.price + product_result.price})
-              .then((result) => {
-                Product.update({qty: 0}, {
-                  where: {
-                    id: transaction.productID,
-                  },
-                })
-                return res.status(201).json(result);
-              })
-              .catch((err) => {
-                console.log(err);
-                return next(err);
-              });
-          })
-          .catch((err) => {
-            return next(err);
-          });
-      })
-      .catch((err) => {
-        return next(err);
-      });
+    try {
+      transaction.commit()
+    } catch (error) {
+      transaction.rollback()
+    }
   }
 }
 

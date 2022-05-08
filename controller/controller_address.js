@@ -1,19 +1,12 @@
-const { Product, User, Cart } = require("../models");
+const { Address } = require("../models");
 
 class Controller {
     static get_all(req, res, next) {
-        console.log('masuk');
-        Cart.findAll(
+        Address.findAll(
             {
                 order: [
                     ['id', 'DESC'],
                 ],
-                include: [
-                    {
-                        model: Product,
-                        required: true,
-                    }
-                ]
             }
         )
             .then((result) => {
@@ -25,7 +18,7 @@ class Controller {
     }
 
     static get_by_user(req, res, next) {
-        Cart.findAll(
+        Address.findAll(
             {
                 where: {
                     userID: req.CurrentUserId
@@ -33,16 +26,6 @@ class Controller {
                 order: [
                     ['id', 'DESC'],
                 ],
-                include: [
-                    {
-                        model: Product,
-                        required: true,
-                    },
-                    {
-                        model: User,
-                        required: true,
-                    }
-                ]
             }
         )
             .then((result) => {
@@ -53,8 +36,8 @@ class Controller {
             });
     }
 
-    static get_product_by_id(req, res, next) {
-        Cart.findOne(
+    static get_address_by_id(req, res, next) {
+        Address.findOne(
             {
                 where: {
                     id: req.params.id
@@ -71,47 +54,32 @@ class Controller {
 
     static create(req, res, next) {
         console.log( req.body);
-        const cart = {
+        const address = {
             // qty: req.body.qty,
-            productID: req.body.productID,
-            userID: req.CurrentUserId,
-            row_status: 1
+            address: req.body.addres,
+            isActive: req.isActive,
         };
-        Cart.findOne({
-            where: {
-                productID: cart.productID,
-            },
-        }).then((result) => {
-            if (result) {
-                return res.status(200).json({
-                    message: 'product already in cart'
-                });
-            }
-            Cart.create(cart)
-                .then((result) => {
-                    return res.status(201).json(result);
-                })
-                .catch((err) => {
-                    console.log(err);
-                    return next(err);
-                });
-        }).catch((err) => {
-            console.log(err);
-            return next(err);
-        });
+        Address.create(address)
+            .then((result) => {
+                return res.status(201).json(result);
+            })
+            .catch((err) => {
+                console.log(err);
+                return next(err);
+            });
     }
 
     //put
     static update(req, res, next) {
 
         const id = req.params.id;
-        const cart = {
+        const address = {
             // qty: req.body.qty,
-            productID: req.body.productID,
-            userID: req.CurrentUserId,
+            address: req.body.address,
+            isActive: req.isActive,
         };
 
-        Cart.update(cart, {
+        Address.update(address, {
             where: {
                 id,
             },
@@ -126,13 +94,13 @@ class Controller {
 
     static delete(req, res, next) {
         const id = req.params.id;
-        Cart.findOne({
+        Address.findOne({
             where: {
                 id,
             },
         })
             .then((result) => {
-                Cart.destroy({
+                Address.destroy({
                     where: {
                         id,
                     },
