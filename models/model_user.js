@@ -54,6 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     },
   }, {
+    tableName: 'users',
     hooks: {
       beforeCreate: (user, options) => {
         user.password = encodePassword(user.password);

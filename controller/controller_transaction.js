@@ -56,17 +56,25 @@ class Controller {
   }
 
   static async createTransaction(req, res, next) {
-    const transactionData = {
-      total_price: 0,
-      userID: req.CurrentUserId,
-      deliveryServiceID: +req.body.deliveryServiceId,
-    };
-    const transaction = await sequelize.transaction()
 
     try {
-      transaction.commit()
+      req.body.product.forEach(({ Product }) => {
+        const transactionData = {
+          userID: req.CurrentUserId,
+          total_price: Product.price,
+          addressID: req.body.addressID,
+          deliveryServiceID: req.body.deliveryServiceId,
+          productID: Product.id
+        };
+        console.log(transactionData);
+        Transaction.create(transactionData)
+      });
+
+      return res.status(201).json({
+        message: 'success'
+      });
     } catch (error) {
-      transaction.rollback()
+      return next(err);
     }
   }
 }

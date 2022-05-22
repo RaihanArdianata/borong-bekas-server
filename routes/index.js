@@ -14,7 +14,7 @@ routes.use(autentication)
 routes.use('/product', product)
 routes.use('/cart', cart)
 routes.use('/address', address)
-// routes.use('/transaction', transaction)
+routes.use('/transaction', transaction)
 routes.use('/delivery-service', delivery_service)
 
 module.exports = routes

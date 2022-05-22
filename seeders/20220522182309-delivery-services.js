@@ -3,7 +3,7 @@ const faker = require('@faker-js/faker').faker
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('DeliveryService', [{
+    return queryInterface.bulkInsert('DeliveryServices', [{
       expedition_name: 'JNE',
       price: 50000,
       createdAt: new Date(),
@@ -26,7 +26,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('DeliveryService', null, {});
+    return queryInterface.bulkDelete('DeliveryServices', null, {});
     /**
      * Add commands to revert seed here.
      *

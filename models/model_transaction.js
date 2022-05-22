@@ -5,11 +5,9 @@ module.exports = (sequelize, DataTypes) => {
 
   class Transaction extends Model { }
 
-  // 1 in cart
-  // 2 waiting payment
-  // 3 payment success waiting seller send product
-  // 4 on going
-  // 5 done
+  // 1 payment success waiting seller send product
+  // 2 on going
+  // 3 done
   Transaction.init({
     total_price: {
       type: DataTypes.INTEGER
@@ -20,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     hooks: {
       beforeCreate: (deliveryService, options) => {
+        user.row_status = 1
       }
     }, sequelize
   })
@@ -27,8 +26,8 @@ module.exports = (sequelize, DataTypes) => {
   Transaction.associate = function (models) {
     // associations can be defined here
     Transaction.belongsTo(models.DeliveryService, { foreignKey: "deliveryServiceID", onDelete: 'cascade' })
-    Transaction.hasMany(models.TransactionLine, { foreignKey: "TransactionLineID", onDelete: 'cascade' })
-    Transaction.belongsTo(models.User, { foreignKey: "UserID", onDelete: 'cascade' })
+    Transaction.belongsTo(models.Product, { foreignKey: "productID", onDelete: 'cascade'});
+    Transaction.belongsTo(models.User, { foreignKey: "userID", onDelete: 'cascade' })
     Transaction.belongsTo(models.Address, { foreignKey: "addressID", onDelete: 'cascade', onUpdate: 'cascade' })
   };
   return Transaction;
