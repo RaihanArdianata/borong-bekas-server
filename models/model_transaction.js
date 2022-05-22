@@ -27,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
   Transaction.associate = function (models) {
     // associations can be defined here
     Transaction.belongsTo(models.DeliveryService, { foreignKey: "deliveryServiceID", onDelete: 'cascade' })
-    Transaction.belongsTo(models.PaymentMethod, { foreignKey: "paymentMethodID", onDelete: 'cascade' })
     Transaction.hasMany(models.TransactionLine, { foreignKey: "TransactionLineID", onDelete: 'cascade' })
     Transaction.belongsTo(models.User, { foreignKey: "UserID", onDelete: 'cascade' })
     Transaction.belongsTo(models.Address, { foreignKey: "addressID", onDelete: 'cascade', onUpdate: 'cascade' })

@@ -2,7 +2,6 @@ const {
   Transaction,
   Product,
   DeliveryService,
-  PaymentMethod,
   User,
   sequelize
 } = require("../models");
@@ -15,10 +14,6 @@ class Controller {
       include: [
         {
           model: DeliveryService,
-          // required: true,
-        },
-        {
-          model: PaymentMethod,
           // required: true,
         },
         {
@@ -47,10 +42,6 @@ class Controller {
           required: true,
         },
         {
-          model: PaymentMethod,
-          required: true,
-        },
-        {
           model: User,
           required: true,
         },
@@ -68,7 +59,6 @@ class Controller {
     const transactionData = {
       total_price: 0,
       userID: req.CurrentUserId,
-      paymentMethodID: +req.body.paymentMethodId,
       deliveryServiceID: +req.body.deliveryServiceId,
     };
     const transaction = await sequelize.transaction()
