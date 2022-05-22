@@ -6,13 +6,13 @@ const routes = require('./routes') //routingan dari service
 const errHandler = require('./middleware/errorHandler') //tempat menampung error
 const db = require("./models");
 
-// db.sequelize.sync();
+db.sequelize.sync();
 
-// db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: true }).then(() => {
 
-//     console.log("Drop and re-sync db.");
+    console.log("Drop and re-sync db.");
 
-// });
+});
 
 app.use(cors())
 app.use(express.static(__dirname + '/public'));

@@ -3,12 +3,12 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const dbConfig = require(__dirname + '/../bin/config.json')[env];
+const dbConfig = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
 console.log(dbConfig);
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
+const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
+  host: dbConfig.host,
   dialect: dbConfig.dialect,
   operatorsAliases: false,
 
